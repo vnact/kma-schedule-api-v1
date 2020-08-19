@@ -4,11 +4,17 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 
+app.set('views', path.resolve(__dirname, 'public'));
+app.set('view engine', 'ejs');
+app.set('port', process.env.PORT || 8080);
+
+
 app.use(express.static(path.resolve(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.set('port', process.env.PORT || 8080);
+app.use("/", require("./routes/index"));
+
 mongoose.connect(process.env.MONGODB_STRING, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
 mongoose
     .connection
