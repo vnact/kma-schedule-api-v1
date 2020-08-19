@@ -11,15 +11,15 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 tags:
-  - name: user
+  - name: User
     description: Thông tin tài khoản sinh viên.
-  - name: schedule
+  - name: Schedule
     description: Thông tin về thời khóa biểu.
 paths:
   /user:
     get:
       tags:
-        - user
+        - User
       summary: Lấy thông tin phiên đăng nhập.
       description: This can only be done by logged user.
       operationId: getUser
@@ -39,7 +39,7 @@ paths:
   /user/login:
     post:
       tags:
-        - user
+        - User
       summary: Đăng nhập vào hệ thống
       operationId: loginUser
     #   produces:
@@ -72,7 +72,7 @@ paths:
   /user/logout:
     get:
       tags:
-        - user
+        - User
       summary: Đăng xuất khỏi hệ thống
       operationId: logoutUser
       responses:
@@ -92,59 +92,70 @@ paths:
 #       name: api_key
 #       in: header
 components: 
-    schemas:
-        Login:
-          type: object
-          properties:
-            studentCode:
-              type: string
-            password:
-              type: string
-          xml:
-            name: Login
-        Schedule:
-          type: object
-          properties:
-            subjectCode:
-              type: string
-            subjectName:
-              type: string
-            className:
-              type: string
-            teacher:
-              type: string
-            lesson:
-              type: string
-              description: Lesson study
-              enum:
-                - 1,2,3
-                - 4,5,6
-                - 7,8,9
-                - 10,11,12
-                - 13,14,15
-            room:
-              type: string
-            day:
-              type: string
-              format: date-time
-            
-          xml:
-            name: Schedule
-        User:
-          type: object
-          properties:
-            id:
-              type: integer
-              format: int64
-            studentCode:
-              type: string
-            name:
-              type: string
-            gender:
-              type: string
-            className:
-              type: string
-          xml:
-            name: User   
-        ApiResponse:
-          type: object
+  schemas:
+    Login:
+      type: object
+      properties:
+        studentCode:
+          type: string
+        password:
+          type: string
+    Schedule:
+      type: object
+      properties:
+        subjectCode:
+          type: string
+        subjectName:
+          type: string
+        className:
+          type: string
+        teacher:
+          type: string
+        lesson:
+          type: string
+          description: Lesson study
+          enum:
+            - 1,2,3
+            - 4,5,6
+            - 7,8,9
+            - 10,11,12
+            - 13,14,15
+        room:
+          type: string
+        day:
+          type: string
+          format: date-time        
+      xml:
+        name: Schedule
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        studentCode:
+          type: string
+        name:
+          type: string
+        gender:
+          type: string
+        className:
+          type: string
+      xml:
+        name: User   
+    ApiResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        studentCode:
+          type: string
+        name:
+          type: string
+        gender:
+          type: string
+        className:
+          type: string
+      xml:
+        name: ApiResponse
