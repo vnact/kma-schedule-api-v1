@@ -1,161 +1,281 @@
-openapi: 3.0.0
+openapi: 2.0.0
 info:
-  description: |
-    Api dùng để tra cứu thời khóa biểu kma.
-  version: "1.0.2"
+  description: Api dùng để tra cứu thời khóa biểu kma.
+  version: "1.0.3"
   title: KMA Schedule API
-  termsOfService: 'http://swagger.io/terms/'
+  termsOfService: "http://swagger.io/terms/"
   contact:
-    email: apiteam@swagger.io
-  license:
-    name: Apache 2.0
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+    email: clonebmn2itt@gmail.com
+host: kma-center.herokuapp.com
+basePath: /
+schemes:
+  - https
 tags:
   - name: User
     description: Thông tin tài khoản sinh viên.
   - name: Schedule
     description: Thông tin về thời khóa biểu.
 paths:
-  /user:
+  /users:
     get:
       tags:
         - User
-      summary: Lấy thông tin phiên đăng nhập.
-      description: This can only be done by logged user.
+      summary: Liêt kê các tài khoản trên hệ thống.
       operationId: getUser
       responses:
         200:
-          description: Information
+          description: Lấy thành công
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/User'
+                $ref: "#/definitions/User"
         404:
-          description: User is not logged
+          description: Có lỗi xảy ra
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/ApiResponse'
-  /user/login:
+                $ref: "#/definitions/ErrorResponse"
+  /users/login:
     post:
       tags:
         - User
       summary: Đăng nhập vào hệ thống
       operationId: loginUser
-    #   produces:
-    #      - application/json
+      produces:
+        - application/json
       parameters:
-        - in: query
+        - in: body
           name: credentials
           description: Thông tin đăng nhập của sinh viên
           required: true
           schema:
-              $ref: '#/components/schemas/Login'
+            $ref: "#/definitions/Login"
       responses:
-        '200':
+        "200":
           description: Đăng nhập thành công
-          headers:
-            X-Rate-Limit:
-              description: calls per hour allowed by the user
-              schema:
-                type: integer
-                format: int32
           content:
             application/json:
               schema:
                 type: string
-            application/xml:
+                example: Đăng nhập thành công
+        "400":
+          description: Tài khoản hoặc mật khẩu sai
+          content:
+            application/json:
               schema:
                 type: string
-        '400':
-          description: Invalid username/password supplied
-  /user/logout:
+                example: Đăng nhập thất bại
+  /schedules/:
     get:
       tags:
-        - User
-      summary: Đăng xuất khỏi hệ thống
-      operationId: logoutUser
+        - Schedule
+      summary: Lấy thời khóa biểu theo tên
+      operationId: getSchedule
       responses:
-        default:
-          description: successful operation
-# securitySchemes:
-#     petstore_auth:
-#       type: oauth2
-#       flows:
-#         implicit:
-#           authorizationUrl: 'http://petstore.swagger.io/oauth/dialog'
-#           scopes:
-#             'write:pets': modify pets in your account
-#             'read:pets': read your pets
-#     api_key:
-#       type: apiKey
-#       name: api_key
-#       in: header
-components: 
-  schemas:
-    Login:
+        "200":
+          description: Danh sách thời khóa biểu
+        "400":
+          description: Lỗi xảy ra
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+  /schedules/semesters/:
+    get:
+      tags:
+        - Schedule
+      summary: Lấy code và tên các học kỳ
+      operationId: getSemester
+      produces:
+        - application/json
+      parameters:
+        - in: paths
+          name: studentCode
+          required: true
+          schema:
+            type: string
+            example: CT030201
+          description: Mã sinh viên tra cứu
+      responses:
+        "200":
+          description: Danh sách học kỳ
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/Semesters"
+        "400":
+          description: Lỗi xảy ra
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ErrorResponse"
+  /schedules/save:
+    post:
+      tags:
+        - Schedule
+      summary: Lưu thời khóa biểu của học kỳ
+      operationId: saveSchedule
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: saveBody
+          description: Thông tin về sinh viên và học kỳ
+          required: true
+          schema:
+            $ref: "#/definitions/SaveSchedule"
+      responses:
+        "200":
+          description: Lưu thời khóa biểu thành công
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Thành công
+        "400":
+          description: Lưu thời khóa biểu thất bại
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Thất bại
+  /schedules/search/:
+    post:
+      tags:
+        - Schedule
+      summary: Tra cứu thời khóa biểu theo ngày
+      operationId: searchSchedule
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: seachBody
+          description: Thông tin tra cứu
+          required: true
+          schema:
+            $ref: "#/definitions/SearchSchedule"
+      responses:
+        "200":
+          description: Tra cứu thời khóa biểu thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Schedules'
+        "400":
+          description: Tra cứu thời khóa biểu thất bại
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Thất bại
+#/definitions/
+definitions:
+  Login:
+    type: object
+    properties:
+      studentCode:
+        type: string
+      password:
+        type: string
+    example:
+      studentCode: CT030201
+      password: 12345
+  User:
+    type: object
+    properties:
+      studentCode:
+        type: string
+      name:
+        type: string
+      className:
+        type: string
+    example:
+      studentCode: CT030201
+      name: Nguyễn Văn A
+      className: CT3B
+  Schedules:
+    type: object
+    properties:
+      subjectCode:
+        type: string
+        description: Mã môn học
+      subjectName:
+        type: string
+        description: Tên môn học
+      className:
+        type: string
+      teacher:
+        type: string
+      lesson:
+        type: string
+        description: Tiết học
+        enum:
+          - 1,2,3
+          - 4,5,6
+          - 7,8,9
+          - 10,11,12
+          - 13,14,15
+      room:
+        type: string
+      day:
+        type: string
+        format: date-time
+    example:
+      subjectCode: ATCTKM1
+      subjectName: Cấu trúc dữ liệu và giải thuật
+      className: Cấu trúc dữ liệu và giải thuật-1-20 (A15C302)
+      teacher: Nguyễn Văn Phác
+      lesson: 10,11,12
+      room: 103_AT1 TA1
+      day: 2020-08-30T17:00:00.000Z
+
+  ErrorResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      error:
+        type: object
+        properties:
+          message:
+            type: string
+    example:
+      success: false
+      error:
+        message: Co loi xay ra
+  Semesters:
+    type: array
+    items:
       type: object
       properties:
-        studentCode:
-          type: string
-        password:
-          type: string
-    Schedule:
-      type: object
-      properties:
-        subjectCode:
-          type: string
-        subjectName:
-          type: string
-        className:
-          type: string
-        teacher:
-          type: string
-        lesson:
-          type: string
-          description: Lesson study
-          enum:
-            - 1,2,3
-            - 4,5,6
-            - 7,8,9
-            - 10,11,12
-            - 13,14,15
-        room:
-          type: string
-        day:
-          type: string
-          format: date-time        
-      xml:
-        name: Schedule
-    User:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        studentCode:
-          type: string
         name:
           type: string
-        gender:
+        drpSemester:
           type: string
-        className:
+    example:
+      - name: 2_2020_2021
+        drpSemester: 4aeee21881294e4597e8e77c4c4bed04
+  SaveSchedule:
+    type: object
+    properties:
+      studentCode:
+        type: string
+      drpSemester:
+        type: string
+    example:
+      studentCode: CT030201
+      drpSemester: 4aeee21881294e4597e8e77c4c4bed04
+  SearchSchedule:
+    type: object
+    properties:
+      studentCode:
+        type: string
+      days:
+        type: array
+        items:
           type: string
-      xml:
-        name: User   
-    ApiResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        studentCode:
-          type: string
-        name:
-          type: string
-        gender:
-          type: string
-        className:
-          type: string
-      xml:
-        name: ApiResponse
+    example:
+      studentCode: CT030201
+      days:
+        - 01/01/2020
+        - 02/01/2020
