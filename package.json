@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "node index",
-    "develop": "nodemon index"
+    "develop": "nodemon index",
+    "build:swagger": "spectacle -d swagger/api.yml -f index.ejs"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
