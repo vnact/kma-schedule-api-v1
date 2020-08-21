@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "start": "node index",
+    "develop": "nodemon index"
+  },
   "dependencies": {
     "dotenv": "^8.2.0",
     "ejs": "^3.1.5",
