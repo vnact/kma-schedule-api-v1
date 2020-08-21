@@ -83,19 +83,6 @@ UserSchema.methods.showTimeTable = async function (drpSemester) {
     return timetable;
 }
 
-UserSchema.statics.findByCredentials = async (studentCode, password) => {
-    const user = await User.findOne({ studentCode })
-    if (!user) return Promise.reject(Error('User is not exist!'));
-    const correctPass = await user.checkLogin();
-    const isPasswordMatch = (password === user.password);
-    if (!correctPass) return Promise.reject(Error('Password is not correct!'));
-    if (!isPasswordMatch) {
-        user.password = password;
-    }
-    await user.save();
-    return user;
-}
-
 const User = mongoose.model('user', UserSchema);
 
 module.exports = User;
