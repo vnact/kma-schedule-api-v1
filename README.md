@@ -1,5 +1,5 @@
 ## Setup swagger 
 
 ```bash
-spectacle -d swagger/api.yml -f index.ejs
+npm i --global spectacle-docs coffeescript
 ```

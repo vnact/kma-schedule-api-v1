@@ -16,5 +16,8 @@
     "moment-timezone": "^0.5.31",
     "mongoose": "^5.10.0",
     "tin-chi-kma": "^1.1.3"
+  },
+  "devDependencies": {
+    "coffeescript": "^2.5.1"
   }
 }
