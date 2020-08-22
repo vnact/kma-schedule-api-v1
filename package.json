@@ -7,7 +7,7 @@
     "start": "node index",
     "develop": "nodemon index",
     "build:swagger": "spectacle -d swagger/api.yml -f index.ejs",    
-    "develop:swagger": "spectacle -D swagger/api.yml -f index.html"
+    "develop:swagger": "spectacle -D swagger/api.json -f index.html"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
