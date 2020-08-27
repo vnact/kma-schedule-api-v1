@@ -1,6 +1,7 @@
 require('dotenv').config();
 const path = require('path');
 const express = require('express');
+const morgan = require('morgan');
 const mongoose = require('mongoose');
 const app = express();
 
@@ -8,7 +9,7 @@ app.set('views', path.resolve(__dirname, 'public'));
 app.set('view engine', 'ejs');
 app.set('port', process.env.PORT || 8080);
 
-
+if (process.env.NODE_ENV == "development") app.use(morgan('dev'));
 app.use(express.static(path.resolve(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
