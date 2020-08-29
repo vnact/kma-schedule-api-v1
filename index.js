@@ -4,9 +4,6 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const app = express();
-
-app.set('views', path.resolve(__dirname, 'public'));
-app.set('view engine', 'ejs');
 app.set('port', process.env.PORT || 8080);
 
 if (process.env.NODE_ENV == "development") app.use(morgan('dev'));

@@ -1,18 +1,29 @@
 {
-    "swagger": "2.0.0",
+    "openapi": "3.0.2",
     "info": {
-        "description": "Api dùng để tra cứu thời khóa biểu kma.",
-        "version": "1.0.3",
+        "version": "1.0.1",
         "title": "KMA Schedule API",
-        "termsOfService": "http://swagger.io/terms/",
         "contact": {
+            "name": "Trần Đức Cường",
+            "url": "https://www.facebook.com/ShiinDz",
             "email": "clonebmn2itt@gmail.com"
-        }
+        },
+        "termsOfService": "http://swagger.io/terms/",
+        "x-logo": {
+            "url": "https://rebilly-core.redoc.ly/rb_apiLogo.svg",
+            "backgroundColor": "#0033A0"
+        },
+        "description": "# Giới thiệu\nApi dùng để tra cứu thời khóa biểu kma."
     },
-    "host": "kma-center.herokuapp.com",
-    "basePath": "/",
-    "schemes": [
-        "https"
+    "servers": [
+        {
+            "url": "https://kma-center.herokuapp.com",
+            "description": "Live Server"
+        },
+        {
+            "url": "http://localhost:8000",
+            "description": "Sandbox Server"
+        }
     ],
     "tags": [
         {
@@ -38,7 +49,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/definitions/User"
+                                    "$ref": "#/components/schemas/User"
                                 }
                             }
                         }
@@ -48,7 +59,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/definitions/ErrorResponse"
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -63,20 +74,17 @@
                 ],
                 "summary": "Đăng nhập vào hệ thống",
                 "operationId": "loginUser",
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "credentials",
-                        "description": "Thông tin đăng nhập của sinh viên",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Login"
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Login"
+                            }
                         }
-                    }
-                ],
+                    },
+                    "description": "Thông tin đăng nhập của sinh viên",
+                    "required": true
+                },
                 "responses": {
                     "200": {
                         "description": "Đăng nhập thành công",
@@ -119,7 +127,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/definitions/ErrorResponse"
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -134,28 +142,16 @@
                 ],
                 "summary": "Lấy code và tên các học kỳ",
                 "operationId": "getSemester",
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "in": "paths",
-                        "name": "studentCode",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "CT030201"
-                        },
-                        "description": "Mã sinh viên tra cứu"
-                    }
-                ],
+                "parameters": [{
+                    "$ref": "#/components/parameters/studentCode"
+                }],
                 "responses": {
                     "200": {
                         "description": "Danh sách học kỳ",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/definitions/Semesters"
+                                    "$ref": "#/components/schemas/Semesters"
                                 }
                             }
                         }
@@ -165,7 +161,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/definitions/ErrorResponse"
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -180,20 +176,17 @@
                 ],
                 "summary": "Lưu thời khóa biểu của học kỳ",
                 "operationId": "saveSchedule",
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "saveBody",
-                        "description": "Thông tin về sinh viên và học kỳ",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/SaveSchedule"
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SaveSchedule"
+                            }
                         }
-                    }
-                ],
+                    },
+                    "description": "Thông tin về sinh viên và học kỳ",
+                    "required": true
+                },
                 "responses": {
                     "200": {
                         "description": "Lưu thời khóa biểu thành công",
@@ -227,27 +220,24 @@
                 ],
                 "summary": "Tra cứu thời khóa biểu theo ngày",
                 "operationId": "searchSchedule",
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "seachBody",
-                        "description": "Thông tin tra cứu",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/SearchSchedule"
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SearchSchedule"
+                            }
                         }
-                    }
-                ],
+                    },
+                    "description": "Thông tin tra cứu",
+                    "required": true
+                },
                 "responses": {
                     "200": {
                         "description": "Tra cứu thời khóa biểu thành công",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/definitions/Schedules"
+                                    "$ref": "#/components/schemas/Schedules"
                                 }
                             }
                         }
@@ -267,163 +257,177 @@
             }
         }
     },
-    "definitions": {
-        "Login": {
-            "type": "object",
-            "properties": {
-                "studentCode": {
-                    "type": "string"
+    "components": {
+        "parameters": {
+            "studentCode": {
+                "in": "query",
+                "name": "studentCode",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "CT030208"
                 },
-                "password": {
-                    "type": "string"
-                }
-            },
-            "example": {
-                "studentCode": "CT030201",
-                "password": 12345
+                "description": "Mã sinh viên cần tra cứu."
             }
         },
-        "User": {
-            "type": "object",
-            "properties": {
-                "studentCode": {
-                    "type": "string"
+        "schemas": {
+            "Login": {
+                "type": "object",
+                "properties": {
+                    "studentCode": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
                 },
-                "name": {
-                    "type": "string"
-                },
-                "className": {
-                    "type": "string"
+                "example": {
+                    "studentCode": "CT030201",
+                    "password": 12345
                 }
             },
-            "example": {
-                "studentCode": "CT030201",
-                "name": "Nguyễn Văn A",
-                "className": "CT3B"
-            }
-        },
-        "Schedules": {
-            "type": "object",
-            "properties": {
-                "subjectCode": {
-                    "type": "string",
-                    "description": "Mã môn học"
+            "User": {
+                "type": "object",
+                "properties": {
+                    "studentCode": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "className": {
+                        "type": "string"
+                    }
                 },
-                "subjectName": {
-                    "type": "string",
-                    "description": "Tên môn học"
-                },
-                "className": {
-                    "type": "string"
-                },
-                "teacher": {
-                    "type": "string"
-                },
-                "lesson": {
-                    "type": "string",
-                    "description": "Tiết học",
-                    "enum": [
-                        "1,2,3",
-                        "4,5,6",
-                        "7,8,9",
-                        "10,11,12",
-                        "13,14,15"
-                    ]
-                },
-                "room": {
-                    "type": "string"
-                },
-                "day": {
-                    "type": "string",
-                    "format": "date-time"
+                "example": {
+                    "studentCode": "CT030201",
+                    "name": "Nguyễn Văn A",
+                    "className": "CT3B"
                 }
             },
-            "example": {
-                "subjectCode": "ATCTKM1",
-                "subjectName": "Cấu trúc dữ liệu và giải thuật",
-                "className": "Cấu trúc dữ liệu và giải thuật-1-20 (A15C302)",
-                "teacher": "Nguyễn Văn Phác",
-                "lesson": "10,11,12",
-                "room": "103_AT1 TA1",
-                "day": "2020-08-30T17:00:00.000Z"
-            }
-        },
-        "ErrorResponse": {
-            "type": "object",
-            "properties": {
-                "success": {
-                    "type": "boolean"
+            "Schedules": {
+                "type": "object",
+                "properties": {
+                    "subjectCode": {
+                        "type": "string",
+                        "description": "Mã môn học"
+                    },
+                    "subjectName": {
+                        "type": "string",
+                        "description": "Tên môn học"
+                    },
+                    "className": {
+                        "type": "string"
+                    },
+                    "teacher": {
+                        "type": "string"
+                    },
+                    "lesson": {
+                        "type": "string",
+                        "description": "Tiết học",
+                        "enum": [
+                            "1,2,3",
+                            "4,5,6",
+                            "7,8,9",
+                            "10,11,12",
+                            "13,14,15"
+                        ]
+                    },
+                    "room": {
+                        "type": "string"
+                    },
+                    "day": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
                 },
-                "error": {
-                    "type": "object",
-                    "properties": {
-                        "message": {
-                            "type": "string"
+                "example": {
+                    "subjectCode": "ATCTKM1",
+                    "subjectName": "Cấu trúc dữ liệu và giải thuật",
+                    "className": "Cấu trúc dữ liệu và giải thuật-1-20 (A15C302)",
+                    "teacher": "Nguyễn Văn Phác",
+                    "lesson": "10,11,12",
+                    "room": "103_AT1 TA1",
+                    "day": "2020-08-30T17:00:00.000Z"
+                }
+            },
+            "ErrorResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "error": {
+                        "type": "object",
+                        "properties": {
+                            "message": {
+                                "type": "string"
+                            }
                         }
+                    }
+                },
+                "example": {
+                    "success": false,
+                    "error": {
+                        "message": "Co loi xay ra"
                     }
                 }
             },
-            "example": {
-                "success": false,
-                "error": {
-                    "message": "Co loi xay ra"
-                }
-            }
-        },
-        "Semesters": {
-            "type": "array",
-            "items": {
+            "Semesters": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "drpSemester": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "example": [
+                    {
+                        "name": 220202021,
+                        "drpSemester": "4aeee21881294e4597e8e77c4c4bed04"
+                    }
+                ]
+            },
+            "SaveSchedule": {
                 "type": "object",
                 "properties": {
-                    "name": {
+                    "studentCode": {
                         "type": "string"
                     },
                     "drpSemester": {
                         "type": "string"
                     }
-                }
-            },
-            "example": [
-                {
-                    "name": 220202021,
+                },
+                "example": {
+                    "studentCode": "CT030201",
                     "drpSemester": "4aeee21881294e4597e8e77c4c4bed04"
                 }
-            ]
-        },
-        "SaveSchedule": {
-            "type": "object",
-            "properties": {
-                "studentCode": {
-                    "type": "string"
-                },
-                "drpSemester": {
-                    "type": "string"
-                }
             },
-            "example": {
-                "studentCode": "CT030201",
-                "drpSemester": "4aeee21881294e4597e8e77c4c4bed04"
-            }
-        },
-        "SearchSchedule": {
-            "type": "object",
-            "properties": {
-                "studentCode": {
-                    "type": "string"
-                },
-                "days": {
-                    "type": "array",
-                    "items": {
+            "SearchSchedule": {
+                "type": "object",
+                "properties": {
+                    "studentCode": {
                         "type": "string"
+                    },
+                    "days": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
                     }
+                },
+                "example": {
+                    "studentCode": "CT030201",
+                    "days": [
+                        "01/01/2020",
+                        "02/01/2020"
+                    ]
                 }
-            },
-            "example": {
-                "studentCode": "CT030201",
-                "days": [
-                    "01/01/2020",
-                    "02/01/2020"
-                ]
             }
         }
     }

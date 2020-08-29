@@ -3,7 +3,7 @@ Api tra cứu thời khoá biểu KMA.
 
 ## Chuẩn bị
 ```bash
-npm i --global spectacle-docs coffeescript
+npm i --global redoc-cli
 ```
 
 ## Setup
