@@ -15,7 +15,11 @@ const ScheduleSchema = new Schema({
     subjectName: String,
     className: String,
     teacher: String,
-    lesson: String,
+    lesson: {
+        type: Number,
+        min: 1,
+        max: 15
+    },
     room: String
 })
 ScheduleSchema.pre("save", async function (next) {
@@ -31,6 +35,7 @@ ScheduleSchema.statics.saveTimeTable = async (user, drpSemester) => {
         lesson.studentCode = studentCode;
         lesson.dayOfWeek = moment(lesson.day, "DD/MM/YYYY").isoWeekday() + 1;
         lesson.day = moment(lesson.day, "DD/MM/YYYY", TIME_ZONE);
+        lesson.lesson = parseInt(lesson.lesson.split(','));
         return lesson;
     })
     const inserted = await Schedule.create(schedule);
@@ -44,17 +49,9 @@ ScheduleSchema.statics.search = async (studentCode, days) => {
         return new Date(moment("DD/MM/YYYY", TIME_ZONE).format());
     })
     const schedule = await Schedule
-        .find({ studentCode, day: { $in: days } });
-
-    return schedule.sort((a, b) => {
-        const dayA = moment(a.day);
-        const dayB = moment(b.day);
-        if (dayB.isBefore(dayA)) return true;
-        if (dayA.isBefore(dayB)) return false;
-        const [lessonA] = a.lesson.split(',');
-        const [lessonB] = b.lesson.split(',');
-        return parseInt(lessonA) > parseInt(lessonB);
-    })
+        .find({ studentCode, day: { $in: days } }, { _id: 0 , _v: 0})
+        .sort({ day: 1, lesson: 1 });
+    return schedule;
 }
 const Schedule = mongoose.model('schedule', ScheduleSchema);
 

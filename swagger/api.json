@@ -142,9 +142,11 @@
                 ],
                 "summary": "Lấy code và tên các học kỳ",
                 "operationId": "getSemester",
-                "parameters": [{
-                    "$ref": "#/components/parameters/studentCode"
-                }],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/studentCode"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Danh sách học kỳ",
@@ -306,50 +308,49 @@
                 }
             },
             "Schedules": {
-                "type": "object",
-                "properties": {
-                    "subjectCode": {
-                        "type": "string",
-                        "description": "Mã môn học"
-                    },
-                    "subjectName": {
-                        "type": "string",
-                        "description": "Tên môn học"
-                    },
-                    "className": {
-                        "type": "string"
-                    },
-                    "teacher": {
-                        "type": "string"
-                    },
-                    "lesson": {
-                        "type": "string",
-                        "description": "Tiết học",
-                        "enum": [
-                            "1,2,3",
-                            "4,5,6",
-                            "7,8,9",
-                            "10,11,12",
-                            "13,14,15"
-                        ]
-                    },
-                    "room": {
-                        "type": "string"
-                    },
-                    "day": {
-                        "type": "string",
-                        "format": "date-time"
+                "type": "array",
+                "items": {
+                    "properties": {
+                        "subjectCode": {
+                            "type": "string",
+                            "description": "Mã môn học"
+                        },
+                        "subjectName": {
+                            "type": "string",
+                            "description": "Tên môn học"
+                        },
+                        "className": {
+                            "type": "string"
+                        },
+                        "teacher": {
+                            "type": "string"
+                        },
+                        "lesson": {
+                            "type": "number",
+                            "description": "Tiết học",
+                            "minimum": 1,
+                            "maximum": 15
+                        },
+                        "room": {
+                            "type": "string"
+                        },
+                        "day": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
                     }
                 },
-                "example": {
-                    "subjectCode": "ATCTKM1",
-                    "subjectName": "Cấu trúc dữ liệu và giải thuật",
-                    "className": "Cấu trúc dữ liệu và giải thuật-1-20 (A15C302)",
-                    "teacher": "Nguyễn Văn Phác",
-                    "lesson": "10,11,12",
-                    "room": "103_AT1 TA1",
-                    "day": "2020-08-30T17:00:00.000Z"
-                }
+                "example": [
+                    {
+                        "subjectCode": "ATCTKM1",
+                        "subjectName": "Cấu trúc dữ liệu và giải thuật",
+                        "className": "Cấu trúc dữ liệu và giải thuật-1-20 (A15C302)",
+                        "teacher": "Nguyễn Văn Phác",
+                        "lesson": 10,
+                        "room": "103_AT1 TA1",
+                        "day": "2020-08-30T17:00:00.000Z"
+                    }
+                ]
             },
             "ErrorResponse": {
                 "type": "object",
