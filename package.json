@@ -7,7 +7,8 @@
     "start": "node index",
     "develop": "nodemon index",
     "build:swagger": "npx redoc-cli bundle ./swagger/api.json -o public/index.html",
-    "develop:swagger": "npx redoc-cli serve ./swagger/api.json  --watch --ssr --port 4321"
+    "develop:swagger": "npx redoc-cli serve ./swagger/api.json  --watch --ssr --port 4321",
+    "postinstall": "npm run build:swagger"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
