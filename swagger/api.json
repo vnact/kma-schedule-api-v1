@@ -18,6 +18,10 @@
     "servers": [
         {
             "url": "https://kma-center.herokuapp.com",
+            "description": "Tunnel Server"
+        },
+        {
+            "url": "https://kma-schedule-api.herokuapp.com",
             "description": "Live Server"
         },
         {
